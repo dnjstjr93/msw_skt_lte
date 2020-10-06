@@ -23,8 +23,6 @@ var my_msw_name = 'msw_skt_lte';
 var fc = {};
 var config = {};
 
-global.my_lte_type = 'KT';
-
 config.name = my_msw_name;
 
 try {
@@ -71,12 +69,6 @@ msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + 
 msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/battery_status');
 
 var msw_sub_lib_topic = [];
-if(config.lib[0].hasOwnProperty("lte")) {
-    my_lte_type = config.lib[0].lte;
-}
-else {
-    my_lte_type = 'KT';
-}
 
 function init() {
     if(config.lib.length > 0) {
