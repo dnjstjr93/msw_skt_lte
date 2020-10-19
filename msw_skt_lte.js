@@ -18,7 +18,7 @@ var mqtt = require('mqtt');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 
-var my_msw_name = 'msw_skt_lte';
+var my_msw_name = 'msw_kt_lte';
 
 var fc = {};
 var config = {};
@@ -43,15 +43,15 @@ catch (e) {
 // library 추가
 var add_lib = {};
 try {
-    add_lib = JSON.parse(fs.readFileSync('./' + config.directory_name + '/lib_skt_lte.json', 'utf8'));
+    add_lib = JSON.parse(fs.readFileSync('./' + config.directory_name + '/lib_kt_lte.json', 'utf8'));
     config.lib.push(add_lib);
 }
 catch (e) {
     add_lib = {
-        name: 'lib_skt_lte',
+        name: 'lib_kt_lte',
         target: 'armv6',
         description: "[name] [portnum] [baudrate]",
-        scripts: './lib_skt_lte /dev/ttyUSB1 115200',
+        scripts: './lib_kt_lte /dev/ttyUSB1 115200',
         data: ['LTE'],
         control: []
     };
@@ -133,8 +133,58 @@ function runLib(obj_lib) {
 }
 
 var msw_mqtt_client = null;
+var mqtt_client = null;
 
+mqtt_connect('203.253.128.161', 1883);
 msw_mqtt_connect('localhost', 1883);
+
+function mqtt_connect(serverip, mqttport) {
+    if(mqtt_client == null) {
+        var connectOptions = {
+            host: serverip,
+            port: mqttport,
+//              username: 'keti',
+//              password: 'keti123',
+            protocol: "mqtt",
+            keepalive: 10,
+//              clientId: serverUID,
+            protocolId: "MQTT",
+            protocolVersion: 4,
+            clean: true,
+            reconnectPeriod: 2000,
+            connectTimeout: 2000,
+            rejectUnauthorized: false
+        };
+        
+        mqtt_client = mqtt.connect(connectOptions);
+
+        mqtt_client.on('connect', function () {
+            console.log('[msw_mqtt_connect] connected to ' + broker_ip);
+            for(idx in msw_sub_fc_topic) {
+                if(msw_sub_fc_topic.hasOwnProperty(idx)) {
+                    mqtt_client.subscribe(msw_sub_fc_topic[idx]);
+                    console.log('[msw_mqtt] msw_sub_fc_topic[' + idx + ']: ' + msw_sub_fc_topic[idx]);
+                }
+            }
+        });
+
+        mqtt_client.on('message', function (topic, message) {
+            for(idx in msw_sub_fc_topic) {
+                if (msw_sub_fc_topic.hasOwnProperty(idx)) {
+                    if(topic == msw_sub_fc_topic[idx]) {
+                        setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString());
+                        break;
+                    }
+                }
+            }
+        });
+
+        mqtt_client.on('error', function (err) {
+            console.log(err.message);
+        });
+    }
+}
+
 
 function msw_mqtt_connect(broker_ip, port) {
     if(msw_mqtt_client == null) {
@@ -158,12 +208,12 @@ function msw_mqtt_connect(broker_ip, port) {
 
         msw_mqtt_client.on('connect', function () {
             console.log('[msw_mqtt_connect] connected to ' + broker_ip);
-            for(idx in msw_sub_fc_topic) {
-                if(msw_sub_fc_topic.hasOwnProperty(idx)) {
-                    msw_mqtt_client.subscribe(msw_sub_fc_topic[idx]);
-                    console.log('[msw_mqtt] msw_sub_fc_topic[' + idx + ']: ' + msw_sub_fc_topic[idx]);
-                }
-            }
+            // for(idx in msw_sub_fc_topic) {
+            //     if(msw_sub_fc_topic.hasOwnProperty(idx)) {
+            //         msw_mqtt_client.subscribe(msw_sub_fc_topic[idx]);
+            //         console.log('[msw_mqtt] msw_sub_fc_topic[' + idx + ']: ' + msw_sub_fc_topic[idx]);
+            //     }
+            // }
         });
 
         msw_mqtt_client.on('message', function (topic, message) {
@@ -185,14 +235,14 @@ function msw_mqtt_connect(broker_ip, port) {
                 }
             }
 
-            for(idx in msw_sub_fc_topic) {
-                if (msw_sub_fc_topic.hasOwnProperty(idx)) {
-                    if(topic == msw_sub_fc_topic[idx]) {
-                        setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString());
-                        break;
-                    }
-                }
-            }
+            // for(idx in msw_sub_fc_topic) {
+            //     if (msw_sub_fc_topic.hasOwnProperty(idx)) {
+            //         if(topic == msw_sub_fc_topic[idx]) {
+            //             setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString());
+            //             break;
+            //         }
+            //     }
+            // }
         });
 
         msw_mqtt_client.on('error', function (err) {
@@ -202,18 +252,19 @@ function msw_mqtt_connect(broker_ip, port) {
 }
 
 function on_receive_from_muv(topic, str_message) {
-    console.log('[' + topic + '] ' + str_message);
+    // console.log('[' + topic + '] ' + str_message);
 
     parseControlMission(topic, str_message);
 }
 
 function on_receive_from_lib(topic, str_message) {
-    console.log('[' + topic + '] ' + str_message);
+    // console.log('[' + topic + '] ' + str_message);
 
     parseDataMission(topic, str_message);
 }
 
 function on_process_fc_data(topic, str_message) {
+    console.log('[' + topic + '] ' + str_message);
     var topic_arr = topic.split('/');
     fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString());
 
