@@ -173,7 +173,7 @@ function mqtt_connect(serverip, mqttport) {
             for(idx in msw_sub_fc_topic) {
                 if (msw_sub_fc_topic.hasOwnProperty(idx)) {
                     if(topic == msw_sub_fc_topic[idx]) {
-                        setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString());
+                        setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString('hex'));
                         break;
                     }
                 }
@@ -266,7 +266,7 @@ function on_receive_from_lib(topic, str_message) {
 
 function on_process_fc_data(topic, str_message) {
     // console.log('[' + topic + '] ' + str_message);
-    console.log(typeof(str_message.toString('hex')));
+    console.log(str_message);
     // console.log(JSON.parse(JSON.stringify(str_message).toString('hex')));
 
     var topic_arr = topic.split('/');
