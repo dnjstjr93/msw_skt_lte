@@ -156,8 +156,6 @@ def missionPortData(missionPort):
             elif (arrQValue_1_data[0] == 'SVC'):
                 lteQ['svc'] = arrQValue_1_data[1]
             elif (arrQValue_1_data[0] == 'SINR'):
-                print(arrQValue_1_data[1])
-                print(arrQValue_1_data[1][1:])
                 try:
                     lteQ['sinr'] = float(arrQValue_1_data[1])
                 except ValueError:
