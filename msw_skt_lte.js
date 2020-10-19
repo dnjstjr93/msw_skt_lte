@@ -266,7 +266,7 @@ function on_receive_from_lib(topic, str_message) {
 
 function on_process_fc_data(topic, str_message) {
     // console.log('[' + topic + '] ' + str_message);
-    console.log(Buffer.from(str_message, 'hex'));
+    console.log(str_message.toString());
     // console.log(JSON.parse(JSON.stringify(str_message).toString('hex')));
 
     var topic_arr = topic.split('/');
