@@ -215,6 +215,7 @@ function on_receive_from_lib(topic, str_message) {
 }
 
 function on_process_fc_data(topic, str_message) {
+    console.log(str_message);
     var topic_arr = topic.split('/');
     fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString());
 
