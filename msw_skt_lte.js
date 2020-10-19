@@ -64,8 +64,8 @@ var msw_sub_muv_topic = [];
 var msw_sub_fc_topic = [];
 msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/heartbeat');
 msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/global_position_int');
-msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/attitude');
-msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/battery_status');
+// msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/attitude');
+// msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/battery_status');
 
 var msw_sub_lib_topic = [];
 
@@ -160,11 +160,11 @@ function mqtt_connect(serverip, mqttport) {
         mqtt_client = mqtt.connect(connectOptions);
 
         mqtt_client.on('connect', function () {
-            console.log('[msw_mqtt_connect] connected to ' + serverip);
+            console.log('[mqtt_connect] connected to ' + serverip);
             for(idx in msw_sub_fc_topic) {
                 if(msw_sub_fc_topic.hasOwnProperty(idx)) {
                     mqtt_client.subscribe(msw_sub_fc_topic[idx]);
-                    console.log('[msw_mqtt] msw_sub_fc_topic[' + idx + ']: ' + msw_sub_fc_topic[idx]);
+                    console.log('[mqtt] msw_sub_fc_topic[' + idx + ']: ' + msw_sub_fc_topic[idx]);
                 }
             }
         });
