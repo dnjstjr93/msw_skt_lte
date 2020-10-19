@@ -159,7 +159,7 @@ function mqtt_connect(serverip, mqttport) {
         mqtt_client = mqtt.connect(connectOptions);
 
         mqtt_client.on('connect', function () {
-            console.log('[msw_mqtt_connect] connected to ' + broker_ip);
+            console.log('[msw_mqtt_connect] connected to ' + serverip);
             for(idx in msw_sub_fc_topic) {
                 if(msw_sub_fc_topic.hasOwnProperty(idx)) {
                     mqtt_client.subscribe(msw_sub_fc_topic[idx]);
