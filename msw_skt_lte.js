@@ -48,10 +48,10 @@ try {
 }
 catch (e) {
     add_lib = {
-        name: 'lib_kt_lte',
+        name: 'lib_skt_lte',
         target: 'armv6',
         description: "[name] [portnum] [baudrate]",
-        scripts: './lib_kt_lte /dev/ttyUSB1 115200',
+        scripts: './lib_skt_lte /dev/ttyUSB1 115200',
         data: ['LTE'],
         control: []
     };
