@@ -253,24 +253,22 @@ function msw_mqtt_connect(broker_ip, port) {
 }
 
 function on_receive_from_muv(topic, str_message) {
-//     console.log('[' + topic + '] ' + str_message);
+    console.log('[' + topic + '] ' + str_message);
 
     parseControlMission(topic, str_message);
 }
 
 function on_receive_from_lib(topic, str_message) {
-//     console.log('[' + topic + '] ' + str_message);
+    console.log('[' + topic + '] ' + str_message);
 
     parseDataMission(topic, str_message);
 }
 
 function on_process_fc_data(topic, str_message) {
-    // console.log('[' + topic + '] ' + str_message);
-    console.log(str_message);
-    // console.log(JSON.parse(JSON.stringify(str_message).toString('hex')));
-
+    console.log('[' + topic + '] ' + str_message);
+   
     var topic_arr = topic.split('/');
-    // fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString('hex'));
+//     fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString('hex'));
 
     parseFcData(topic, str_message);
 }
@@ -318,12 +316,7 @@ function parseControlMission(topic, str_message) {
 function parseFcData(topic, str_message) {
     // User define Code
     // console.log(Buffer.from(str_message).toString('hex'));
-    var topic_arr = topic.split('/');
-    if (topic_arr[topic_arr.length - 1] == 'disarm') {
-        var _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[1]; // ''
-        msw_mqtt_client.publish(_topic, Buffer.from(str_message).toString('hex'));
-    }
-
+    
     // if (topic_arr[topic_arr.length - 1] == 'global_position_int') {
     //     var _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[1]; // ''
     //     msw_mqtt_client.publish(_topic, Buffer.from(str_message).toString('hex'));
@@ -332,17 +325,6 @@ function parseFcData(topic, str_message) {
     // else if (topic_arr[topic_arr.length - 1] == 'heartbeat') {
     //     var _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[2]; // ''
     //     msw_mqtt_client.publish(_topic, Buffer.from(str_message).toString('hex'));
-    // }
-
-    // else if (topic_arr[topic_arr.length - 1] == 'attitude') {
-    //     var _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[3]; // ''
-    //     msw_mqtt_client.publish(_topic, Buffer.from(str_message).toString('hex'));
-    // }
-
-    // else if (topic_arr[topic_arr.length - 1] == 'battery_status') {
-    //     var _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[4]; // ''
-    //     msw_mqtt_client.publish(_topic, Buffer.from(str_message).toString('hex'));
-    // }
-    
+    // }    
     ///////////////////////////////////////////////////////////////////////
 }
