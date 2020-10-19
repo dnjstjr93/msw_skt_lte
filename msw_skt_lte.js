@@ -263,6 +263,7 @@ function parseControlMission(topic, str_message) {
 
 function parseFcData(topic, str_message) {
     // User define Code
+    console.log(str_message);
     var topic_arr = topic.split('/');
     if (topic_arr[topic_arr.length - 1] == 'global_position_int') {
         var _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[1]; // ''
