@@ -269,7 +269,7 @@ function on_process_fc_data(topic, str_message) {
     console.log(Buffer.from(str_message).toString('hex'));
 
     var topic_arr = topic.split('/');
-    fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString());
+    fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString('hex'));
 
     parseFcData(topic, str_message);
 }
