@@ -241,12 +241,7 @@ function parseDataMission(topic, str_message) {
         var topic_arr = topic.split('/');
         var data_topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + config.name + '/' + topic_arr[topic_arr.length-1];
         msw_mqtt_client.publish(data_topic + '/' + my_sortie_name, str_message);
-        console.log(my_sortie_name);
-        console.log(data_topic + config.sortie_name);
-        // /Mobius/KETI_MUV/Mission_Data/LTE_SKT/msw_skt_lte/LTE/disarm
-
         // msw_mqtt_client.publish(data_topic, str_message);
-        // /Mobius/KETI_MUV/Mission_Data/LTE_SKT/msw_skt_lte/LTE
     }
     catch (e) {
         console.log('[parseDataMission] data format of lib is not json');
