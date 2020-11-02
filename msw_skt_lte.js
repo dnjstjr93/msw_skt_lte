@@ -203,19 +203,19 @@ function msw_mqtt_connect(broker_ip, port) {
 }
 
 function on_receive_from_muv(topic, str_message) {
-    console.log('[' + topic + '] ' + str_message);
+    // console.log('[' + topic + '] ' + str_message);
 
     parseControlMission(topic, str_message);
 }
 
 function on_receive_from_lib(topic, str_message) {
-    console.log('[' + topic + '] ' + str_message);
+    // console.log('[' + topic + '] ' + str_message);
 
     parseDataMission(topic, str_message);
 }
 
 function on_process_fc_data(topic, str_message) {
-    console.log('[' + topic + '] ' + str_message);
+    // console.log('[' + topic + '] ' + str_message);
    
     var topic_arr = topic.split('/');
 //     fc[topic_arr[topic_arr.length-1]] = JSON.parse(str_message.toString('hex'));
@@ -240,6 +240,7 @@ function parseDataMission(topic, str_message) {
 
         var topic_arr = topic.split('/');
         var data_topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + config.name + '/' + topic_arr[topic_arr.length-1];
+        console.log(data_topic + config.sortie_name);
         msw_mqtt_client.publish(data_topic + config.sortie_name, str_message);
         // msw_mqtt_client.publish(data_topic, str_message);
     }
