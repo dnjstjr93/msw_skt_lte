@@ -121,19 +121,19 @@ function runLib(obj_lib) {
         run_lib.stderr.on('data', function(data) {
             console.log('stderr: ' + data);
 
-            setTimeout(runLib, 1000);
+            setTimeout(runLib, 1000 + parseInt(Math.random()*10), JSON.parse(JSON.stringify(obj_lib)));
         });
 
         run_lib.on('exit', function(code) {
             console.log('exit: ' + code);
 
-            setTimeout(runLib, 1000);
+            setTimeout(init, 1000);
         });
 
         run_lib.on('error', function(code) {
             console.log('error: ' + code);
 
-            setTimeout(runLib, 1000);
+            setTimeout(runLib, 1000 + parseInt(Math.random()*10), JSON.parse(JSON.stringify(obj_lib)));
         });
     }
     catch (e) {
