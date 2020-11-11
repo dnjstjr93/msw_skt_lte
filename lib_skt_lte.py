@@ -148,6 +148,8 @@ def missionPortData(missionPort):
     while True:
         try :
             if count == 0:
+                continue
+            else:
                 lteQ = json.loads(lteQ)
 
             lteReqGetRssi(missionPort)
