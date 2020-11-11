@@ -11,35 +11,38 @@ global lib_mqtt_client
 global missionPort
 global lteQ
 
-lteQ = dict()
-lteQ['earfcn_dl'] = ""
-lteQ['earfcn_ul'] = ""
-lteQ['rf_state'] = ""
-lteQ['band'] = 0
-lteQ['bandwidth'] = 0
-lteQ['plmn'] = 0
-lteQ['tac'] = 0
-lteQ['cell_id'] = ""
-lteQ['esm_cause'] = 0
-lteQ['drx'] = 0
-lteQ['rsrp'] = 0.0
-lteQ['rsrq'] = 0.0
-lteQ['rssi'] = 0.0
-lteQ['l2w'] = ""
-lteQ['ri'] = 0
-lteQ['cqi'] = 0
-lteQ['status'] = ""
-lteQ['sub_status'] = ""
-lteQ['rrc'] = ""
-lteQ['svc'] = ""
-lteQ['sinr'] = 0.0
-lteQ['tx_pwr'] = 0
-lteQ['tmsi'] = ""
-lteQ['ip'] = ""
-lteQ['avg_rsrp'] = 0.0
-lteQ['antbar'] = 0
-lteQ['imsi'] = 0
-lteQ['missdn'] = 0
+def lteQ_init():
+    global lteQ
+
+    lteQ = dict()
+    lteQ['earfcn_dl'] = ""
+    lteQ['earfcn_ul'] = ""
+    lteQ['rf_state'] = ""
+    lteQ['band'] = 0
+    lteQ['bandwidth'] = 0
+    lteQ['plmn'] = 0
+    lteQ['tac'] = 0
+    lteQ['cell_id'] = ""
+    lteQ['esm_cause'] = 0
+    lteQ['drx'] = 0
+    lteQ['rsrp'] = 0.0
+    lteQ['rsrq'] = 0.0
+    lteQ['rssi'] = 0.0
+    lteQ['l2w'] = ""
+    lteQ['ri'] = 0
+    lteQ['cqi'] = 0
+    lteQ['status'] = ""
+    lteQ['sub_status'] = ""
+    lteQ['rrc'] = ""
+    lteQ['svc'] = ""
+    lteQ['sinr'] = 0.0
+    lteQ['tx_pwr'] = 0
+    lteQ['tmsi'] = ""
+    lteQ['ip'] = ""
+    lteQ['avg_rsrp'] = 0.0
+    lteQ['antbar'] = 0
+    lteQ['imsi'] = 0
+    lteQ['missdn'] = 0
 
 def on_connect(client,userdata,flags, rc):
     if rc == 0:
@@ -232,7 +235,8 @@ def missionPortData(missionPort):
             send_data_to_msw(data_topic, lteQ)
 
         except (TypeError, ValueError):
-            lteQ = json.loads(lteQ)
+            lteQ_init()
+            # lteQ = json.loads(lteQ)
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
             print('except - ', missionStr)
