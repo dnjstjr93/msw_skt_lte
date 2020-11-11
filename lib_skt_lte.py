@@ -146,8 +146,10 @@ def missionPortData(missionPort):
     count = 0
 
     while True:
+        count += 1
+
         try :
-            if count == 0:
+            if count == 1:
                 print(lteQ)
                 continue
             else:
@@ -305,7 +307,6 @@ def missionPortData(missionPort):
 
             send_data_to_msw(data_topic, lteQ)
         
-        count += 1
 
 if __name__ == '__main__':
     my_lib_name = 'lib_skt_lte'
