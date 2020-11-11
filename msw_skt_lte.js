@@ -109,7 +109,8 @@ function runLib(obj_lib) {
             scripts_arr[0] = './' + config.directory_name + '/' + scripts_arr[0];
         }
 
-        var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
+        // var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
+        var run_lib = spawn('python3', ['./' + config.directory_name + 'lib_skt_lte.py', '/dev/ttyUSB1', 115200]);
 
         run_lib.stdout.on('data', function(data) {
             console.log('stdout: ' + data);
@@ -121,10 +122,14 @@ function runLib(obj_lib) {
 
         run_lib.on('exit', function(code) {
             console.log('exit: ' + code);
+            
+            setTimeout(runLib, 1000);
         });
 
         run_lib.on('error', function(code) {
             console.log('error: ' + code);
+
+            setTimeout(runLib, 1000);
         });
     }
     catch (e) {
