@@ -157,6 +157,7 @@ def missionPortData(missionPort):
 
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
+            print('try - ', missionStr)
 
             arrLTEQ = missionStr[1].decode("utf-8").split(", ")
             
@@ -234,6 +235,7 @@ def missionPortData(missionPort):
             lteQ = json.loads(lteQ)
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
+            print('except - ', missionStr)
 
             arrLTEQ = missionStr[1].decode("utf-8").split(", ")
             
