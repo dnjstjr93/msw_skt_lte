@@ -147,21 +147,20 @@ def send_data_to_msw (data_topic, obj_data):
 def missionPortData(missionPort):
     global lteQ
     count = 0
-    lteQ_init()
-    
+    # lteQ_init()
+
     while True:
         count += 1
 
         try :
             if count == 1:
-                print(lteQ)
+                lteQ_init()
                 
             else:
                 lteQ = json.loads(lteQ)
 
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
-            print('try - ', missionStr)
 
             arrLTEQ = missionStr[1].decode("utf-8").split(", ")
             
@@ -237,10 +236,8 @@ def missionPortData(missionPort):
 
         except (TypeError, ValueError):
             lteQ_init()
-            # lteQ = json.loads(lteQ)
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
-            print('except - ', missionStr)
 
             arrLTEQ = missionStr[1].decode("utf-8").split(", ")
             
