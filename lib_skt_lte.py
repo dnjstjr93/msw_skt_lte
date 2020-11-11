@@ -147,7 +147,8 @@ def send_data_to_msw (data_topic, obj_data):
 def missionPortData(missionPort):
     global lteQ
     count = 0
-
+    lteQ_init()
+    
     while True:
         count += 1
 
