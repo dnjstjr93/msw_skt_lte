@@ -222,7 +222,7 @@ def missionPortData(missionPort):
 
             send_data_to_msw(data_topic, lteQ)
 
-        except TypeError, ValueError:
+        except (TypeError, ValueError):
             lteQ = json.loads(lteQ)
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
