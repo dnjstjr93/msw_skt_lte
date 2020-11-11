@@ -118,6 +118,8 @@ function runLib(obj_lib) {
 
         run_lib.stderr.on('data', function(data) {
             console.log('stderr: ' + data);
+
+            setTimeout(runLib, 1000);
         });
 
         run_lib.on('exit', function(code) {
