@@ -151,7 +151,7 @@ def missionPortData(missionPort):
         try :
             if count == 1:
                 print(lteQ)
-                continue
+                
             else:
                 lteQ = json.loads(lteQ)
 
