@@ -143,10 +143,13 @@ def send_data_to_msw (data_topic, obj_data):
 
 def missionPortData(missionPort):
     global lteQ
+    count = 0
 
     while True:
         try :
-            lteQ = json.loads(lteQ)
+            if count == 0:
+                lteQ = json.loads(lteQ)
+
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
 
@@ -298,6 +301,8 @@ def missionPortData(missionPort):
             lteQ = json.dumps(lteQ)
 
             send_data_to_msw(data_topic, lteQ)
+        
+        count += 1
 
 if __name__ == '__main__':
     my_lib_name = 'lib_skt_lte'
