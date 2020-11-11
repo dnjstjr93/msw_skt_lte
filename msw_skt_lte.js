@@ -100,8 +100,6 @@ function init() {
 
 function runLib(obj_lib) {
     try {
-        console.log(obj_lib);
-
         var scripts_arr = obj_lib.scripts.split(' ');
         if(config.directory_name == '') {
 
@@ -121,7 +119,7 @@ function runLib(obj_lib) {
         run_lib.stderr.on('data', function(data) {
             console.log('stderr: ' + data);
 
-            setTimeout(runLib, 1000 + parseInt(Math.random()*10), JSON.parse(JSON.stringify(obj_lib)));
+            setTimeout(init, 1000);
         });
 
         run_lib.on('exit', function(code) {
@@ -133,7 +131,7 @@ function runLib(obj_lib) {
         run_lib.on('error', function(code) {
             console.log('error: ' + code);
 
-            setTimeout(runLib, 1000 + parseInt(Math.random()*10), JSON.parse(JSON.stringify(obj_lib)));
+            setTimeout(init, 1000);
         });
     }
     catch (e) {
