@@ -120,15 +120,7 @@ def missionPortClose():
     global missionPort
     print('missionPort closed!')
     missionPort.close()
-    
-    missionPort = serial.Serial(missionPortNum, missionBaudrate, timeout = 2)
-    print ('missionPort open. ' + missionPortNum + ' Data rate: ' + missionBaudrate)
-    mission_thread = threading.Thread(
-        target=missionPortData, args=(missionPort,)
-    )
-    mission_thread.start()
 
-    return missionPort
 
 def missionPortError(err):
     print('[missionPort error]: ', err)
@@ -146,19 +138,11 @@ def send_data_to_msw (data_topic, obj_data):
 
 def missionPortData(missionPort):
     global lteQ
-    count = 0
-    # lteQ_init()
 
+    # lteQ = dict()
+    
     while True:
-        count += 1
-
-        try :
-            if count == 1:
-                lteQ_init()
-                
-            else:
-                lteQ = json.loads(lteQ)
-
+        try:
             lteReqGetRssi(missionPort)
             missionStr = missionPort.readlines()
 
@@ -234,83 +218,11 @@ def missionPortData(missionPort):
 
             send_data_to_msw(data_topic, lteQ)
 
+            lteQ = json.loads(lteQ)
+        
         except (TypeError, ValueError):
             lteQ_init()
-            lteReqGetRssi(missionPort)
-            missionStr = missionPort.readlines()
 
-            arrLTEQ = missionStr[1].decode("utf-8").split(", ")
-            
-            arrQValue_0 = arrLTEQ[0].split(':')
-            if (arrQValue_0[0] == '@DBG'):
-                    lteQ['earfcn_dl'] = arrQValue_0[2].split(',')[0].split('/')[0]
-                    lteQ['earfcn_ul'] = arrQValue_0[2].split(',')[0].split('/')[1]
-                    lteQ['rf_state'] = arrQValue_0[3]
-            arrQValue_1 = arrLTEQ[1].split(',')
-            for idx in range(len(arrQValue_1)):
-                arrQValue_1_data = arrQValue_1[idx].split(':')
-                if (arrQValue_1_data[0] == 'BAND'):
-                    lteQ['band'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'BW'):
-                    lteQ['bandwidth'] = int(arrQValue_1_data[1][:-3])
-                elif (arrQValue_1_data[0] == 'PLMN'):
-                    lteQ['plmn'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'TAC'):
-                    lteQ['tac'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'Cell(PCI)'):
-                    lteQ['cell_id'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'ESM CAUSE'):
-                    lteQ['esm_cause'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'DRX'):
-                    lteQ['drx'] = int(arrQValue_1_data[1][:-2])
-                elif (arrQValue_1_data[0] == 'RSRP'):
-                    lteQ['rsrp'] = float(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'RSRQ'):
-                    lteQ['rsrq'] = float(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'RSSI'):
-                    lteQ['rssi'] = float(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'L2W'):
-                    lteQ['l2w'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'RI'):
-                    lteQ['ri'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'CQI'):
-                    lteQ['cqi'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'STATUS'):
-                    lteQ['status'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'SUB STATUS'):
-                    lteQ['sub_status'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'RRC'):
-                    lteQ['rrc'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'SVC'):
-                    lteQ['svc'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'SINR'):
-                    try:
-                        lteQ['sinr'] = float(arrQValue_1_data[1])
-                    except ValueError:
-                        lteQ['sinr'] = 0.0
-                elif (arrQValue_1_data[0] == 'Tx Pwr'):
-                    lteQ['tx_pwr'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'TMSI'):
-                    lteQ['tmsi'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'IP'):
-                    lteQ['ip'] = arrQValue_1_data[1]
-                elif (arrQValue_1_data[0] == 'AVG RSRP'):
-                    lteQ['avg_rsrp'] = float(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'ANTBAR'):
-                    lteQ['antbar'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'IMSI'):
-                    lteQ['imsi'] = int(arrQValue_1_data[1])
-                elif (arrQValue_1_data[0] == 'MSISDN'):
-                    lteQ['missdn'] = int(arrQValue_1_data[1])
-
-            # print ('lteQ: \n', lteQ)
-
-            container_name = lib["data"][0]
-            data_topic = '/MUV/data/' + lib["name"] + '/' + container_name
-            lteQ = json.dumps(lteQ)
-
-            send_data_to_msw(data_topic, lteQ)
-        
 
 if __name__ == '__main__':
     my_lib_name = 'lib_skt_lte'
