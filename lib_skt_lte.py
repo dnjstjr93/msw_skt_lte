@@ -140,7 +140,8 @@ def missionPortData(missionPort):
     global lteQ
 
     # lteQ = dict()
-    
+    lteQ = lteQ_init()
+
     while True:
         try:
             lteReqGetRssi(missionPort)
