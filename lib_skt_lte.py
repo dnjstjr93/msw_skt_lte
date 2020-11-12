@@ -147,7 +147,7 @@ def missionPortData(missionPort):
             missionStr = missionPort.readlines()
 
             arrLTEQ = missionStr[1].decode("utf-8").split(", ")
-            
+            print(arrLTEQ)
             arrQValue_0 = arrLTEQ[0].split(':')
             if (arrQValue_0[0] == '@DBG'):
                     lteQ['earfcn_dl'] = arrQValue_0[2].split(',')[0].split('/')[0]
